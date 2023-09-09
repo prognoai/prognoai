@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="./favicon.png"> <!-- Favicon Line -->
+  <title>Progno AI</title>
+  <style>
+    /* Global Styles */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #1a1a1a;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* Logo Area */
+    .logo {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 200px;
+      height: auto;
+      z-index: 1000;
+    }
+
+    /* Center the central area */
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    /* Central Rectangular Area */
+    .central-area {
+      width: 80%;
+      height: 80%;
+      background-color: #2e2e2e;
+      position: relative;
+      border-radius: 16px;  
+    }
+
+    /* Dotted Grid Background */
+    .dotted-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(#6a6a6a 1px, transparent 1px),
+        radial-gradient(#6a6a6a 1px, transparent 1px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      opacity: 0.5;
+    }
+
+        /* Heading Text */
+        .heading {
+      font-family: 'Roboto', sans-serif;
+      color: white;
+      font-size: 24px;
+      animation: type-animation 5s steps(50, end) forwards;
+      visibility: hidden;
+    }
+    
+    /* Heading Container */
+    .heading-container {
+        position: absolute;
+        top: 10%;  /* Adjusted to move the text downward */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 95%;
+        font-family: 'Roboto', sans-serif;
+        color: white;
+        font-size: 4vw;
+        font-weight: 900;
+        text-align: center;
+        }
+
+    @media (max-width: 768px) {
+      .heading-container {
+        font-size: 6vw;
+        font-weight: 900;
+        top: 5%;
+      }
+    }
+
+    /* Fade-in Text */
+    .fade-in-text {
+      visibility: hidden;
+      opacity: 0;
+      margin-top: 6vh;  /* Add some top margin */
+      font-family: 'Roboto', sans-serif;
+      color: white;
+      font-size: 4vh;  /* Increase the font size */
+      font-weight: 700;  /* Increase the font weight */
+      text-align: center;
+      transition: opacity 2s ease-in-out, visibility 2s ease-in-out;
+    }
+    
+    .fade-in-text.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .fade-in-text {
+        font-size: 5vw;
+        font-weight: 700;
+      }
+    }
+
+    /* Email and Button Container */
+    .email-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 8vh;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 2s ease-in-out, visibility 2s ease-in-out;
+    }
+
+    /* Email Text Box */
+    .email-input {
+      background-color: #4a4a4a;
+      border: 1px solid #6a6a6a;
+      border-radius: 4px;
+      padding: 12px;
+      color: #fff;
+      font-size: 16px;
+      width: 50%;
+    }
+
+    /* Request Access Button */
+    .request-btn {
+      margin-left: 16px;
+      background-color: #6a6a6a;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 12px 24px;
+      cursor: pointer;
+    }
+
+    .email-container.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media (max-width: 480px) {
+    .email-container {
+      flex-direction: column;
+    }
+
+    .email-input,
+    .request-button {
+      width: 80%;  /* This ensures that they take up most of the width */
+      text-align: center;  /* This ensures that the text inside the button is centered */
+      margin-bottom: 2vh;
+    }
+}
+
+  </style>
+</head>
+<body>
+  <img src="./logo.png" alt="Logo" class="logo">
+  <div class="container">
+    <div class="central-area">
+      <div class="dotted-grid"></div>
+      <div class="heading-container">
+        <div id="line1"></div>
+        <div id="line2"></div>
+        <div id="line3"></div>
+        <div id="line4"></div>
+        <div id="fade-in-text" class="fade-in-text">
+          The Future of Healthcare is Here: Simplify Diagnostics and Patient Management with AI
+        </div>
+        <form id="email-container" class="email-container" name="email-collection" method="POST" data-netlify="true">
+          <input type="email" id="email-input" name="email" class="email-input" placeholder="Your Email Address">
+          <button type="submit" class="request-btn">Request Access</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    const lineElements = [
+      document.getElementById('line1'),
+      document.getElementById('line2'),
+      document.getElementById('line3'),
+      document.getElementById('line4'),
+    ];
+    const fadeInTextElement = document.getElementById('fade-in-text');
+    const emailContainerElement = document.getElementById('email-container');
+
+    let lines;
+    let speeds;
+
+    if (window.innerWidth > 768) {  // Desktop
+      lines = [
+        'Transforming Healthcare Operations',
+        'One Conversation at a Time.'
+      ];
+      speeds = [50, 100];
+    } else {  // Mobile or Tab
+      lines = [
+        'Transforming Healthcare',
+        'Operations',
+        'One Conversation',
+        'at a Time.'
+      ];
+      speeds = [50, 50, 100, 100];
+    }
+
+    let lineIndex = 0;
+    let charIndex = 0;
+
+    function typeText() {
+      if (lineIndex < lines.length) {
+        if (charIndex < lines[lineIndex].length) {
+          lineElements[lineIndex].innerHTML += lines[lineIndex].charAt(charIndex);
+          charIndex++;
+          setTimeout(() => typeText(), speeds[lineIndex]);
+        } else {
+          lineIndex++;
+          charIndex = 0;
+          typeText();
+        }
+      } else {
+        // Trigger the fade-in text when typing is complete
+        setTimeout(() => {
+          fadeInTextElement.classList.add('show');
+          setTimeout(() => {
+            emailContainerElement.classList.add('show');
+          }, 2000);  // 2 seconds delay after fade-in text
+        }, 1000); // 1 second delay
+      }
+    }
+
+
+    typeText();
+  </script>
+</body>
+</html>
