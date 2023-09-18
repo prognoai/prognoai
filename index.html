@@ -183,7 +183,7 @@
         <div id="fade-in-text" class="fade-in-text">
           The Future of Healthcare is Here: Simplify Diagnostics and Patient Management with AI
         </div>
-        <form id="email-container" class="email-container" name="email-collection" method="POST" data-netlify="true">
+        <form id="email-container" class="email-container" name="email-collection" method="POST" action="#">
           <input type="email" id="email-input" name="email" class="email-input" placeholder="Your Email Address">
           <button type="submit" class="request-btn">Request Access</button>
         </form>
@@ -246,6 +246,45 @@
 
 
     typeText();
+
+
+    function submitEmailToGoogleAppScript(e) {
+      e.preventDefault(); // prevent default form submission
+
+      const emailInput = document.getElementById('email-input');
+      const emailValue = emailInput.value;
+
+      // Check if email is provided
+      if (emailValue.trim() === '') {
+        alert('Please enter your email.');
+        return;
+      }
+
+      // Send a POST request to Google AppScript
+      fetch('https://script.google.com/macros/s/AKfycbwNiRds0a3X3DhJO53lxNy4oyf6cRRSqkv4w6S40lrT5LblupLfylmUQ7TV3ccTp9Js/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'User-Agent': 'Insomnia/2023.5.5'
+        },
+        body: `email=${encodeURIComponent(emailValue)}`
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Thank you for submitting your email.');
+        } else {
+          alert('There was an error. Please try again later.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error. Please try again later.');
+      });
+    }
+
+    // Attach event listener to the form
+    document.getElementById('email-container').addEventListener('submit', submitEmailToGoogleAppScript);
+
   </script>
 </body>
 </html>
